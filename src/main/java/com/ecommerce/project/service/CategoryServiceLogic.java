@@ -1,7 +1,9 @@
 package com.ecommerce.project.service;
 
 import com.ecommerce.project.model.Category;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,14 +26,18 @@ public class CategoryServiceLogic implements CategoryService {
 
     @Override
     public String deleteCategory(Long categoryId) {
-        for (int i = 0; i < categories.size(); i++) {
-            Category category = categories.get(i);
-            if (category.getCategoryId() == categoryId) {
-                categories.remove(i);
-                return "Category with categoryId: " + categoryId + " deleted successfully";
+        try {
+            for (int i = 0; i < categories.size(); i++) {
+                Category category = categories.get(i);
+                if (category.getCategoryId() == categoryId) {
+                    categories.remove(i);
+                    return "Category with categoryId: " + categoryId + " deleted successfully";
+                }
             }
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category with categoryId: " + categoryId + " not found");
+        } catch (ResponseStatusException e) {
+            throw e;
         }
-        return "Category not found";
     }
 }
 
