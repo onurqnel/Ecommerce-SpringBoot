@@ -25,19 +25,15 @@ public class CategoryServiceLogic implements CategoryService {
     }
 
     @Override
-    public String deleteCategory(Long categoryId) {
-        try {
-            for (int i = 0; i < categories.size(); i++) {
-                Category category = categories.get(i);
-                if (category.getCategoryId() == categoryId) {
-                    categories.remove(i);
-                    return "Category with categoryId: " + categoryId + " deleted successfully";
-                }
+    public String deleteCategory(Long categoryId) throws ResponseStatusException {
+        for (int i = 0; i < categories.size(); i++) {
+            Category category = categories.get(i);
+            if (category.getCategoryId() == categoryId) {
+                categories.remove(i);
+                return "Category with categoryId: " + categoryId + " deleted successfully";
             }
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category with categoryId: " + categoryId + " not found");
-        } catch (ResponseStatusException e) {
-            throw e;
         }
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category with categoryId: " + categoryId + " not found");
     }
 }
 
