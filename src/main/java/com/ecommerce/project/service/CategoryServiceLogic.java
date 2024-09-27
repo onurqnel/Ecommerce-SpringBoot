@@ -18,20 +18,39 @@ public class CategoryServiceLogic implements CategoryService {
     // Variable for auto-incrementing IDs for categories.
     private Long nextId = 1L;
 
-    // This method retrieves the list of all categories.
+    /*
+     * Retrieves the list of all categories.
+     *
+     * @return The current list of categories stored in memory.
+     *         This simulates fetching all categories from a database.
+     */
     @Override
     public List<Category> getAllCategories() {
         return categories;  // Returns the current list of categories.
     }
 
-    // This method adds a new category to the list.
+    /*
+     * Creates a new category by assigning a unique ID and adding it to the list.
+     *
+     * @param category The Category object to be created.
+     *                 The method assigns a unique ID and adds the category to the list.
+     */
     @Override
     public void createCategory(Category category) {
         category.setCategoryId(nextId++);  // Assigns a unique ID to the new category and increments the ID counter.
         categories.add(category);  // Adds the category to the in-memory list.
     }
 
-    // This method deletes a category by its ID and throws an exception if the category is not found.
+    /*
+     * Deletes a category by its ID.
+     *
+     * @param categoryId The unique identifier of the category to be deleted.
+     *
+     * @return A success message indicating that the category has been deleted.
+     *
+     * @throws ResponseStatusException If the category with the given ID is not found, an exception is thrown
+     *                                 with a 404 (Not Found) status.
+     */
     @Override
     public String deleteCategory(Long categoryId) throws ResponseStatusException {
         // Loops through the list of categories to find the one with the matching ID.
@@ -39,7 +58,7 @@ public class CategoryServiceLogic implements CategoryService {
             Category category = categories.get(i);
             // If the category ID matches, the category is removed from the list.
             if (category.getCategoryId() == categoryId) {
-                categories.remove(i);
+                categories.remove(i);  // Removes the category from the list.
                 return "Category with categoryId: " + categoryId + " deleted successfully";
             }
         }
@@ -47,6 +66,18 @@ public class CategoryServiceLogic implements CategoryService {
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category with categoryId: " + categoryId + " not found");
     }
 
+    /*
+     * Updates an existing category by its ID.
+     *
+     * @param category   The new category data to update.
+     *                   This will replace the existing category data.
+     *
+     * @param categoryId The unique identifier of the category to be updated.
+     *
+     * @return The updated Category object.
+     *
+     * @throws ResponseStatusException If the category with the given ID is not found, a 404 (Not Found) status is returned.
+     */
     @Override
     public Category updateCategory(Category category, Long categoryId) {
         // Initialize a variable to hold the found category
@@ -72,4 +103,5 @@ public class CategoryServiceLogic implements CategoryService {
         }
     }
 }
+
 
