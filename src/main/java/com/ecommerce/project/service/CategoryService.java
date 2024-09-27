@@ -33,4 +33,6 @@ public interface CategoryService {
      * It returns a String status message indicating success or failure.
      */
     String deleteCategory(Long categoryId);
+
+    Category updateCategory(Category category, Long categoryId);
 }

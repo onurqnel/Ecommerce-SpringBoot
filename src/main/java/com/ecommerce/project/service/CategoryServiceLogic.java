@@ -46,5 +46,30 @@ public class CategoryServiceLogic implements CategoryService {
         // If no category is found, a ResponseStatusException is thrown with a 404 Not Found status.
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category with categoryId: " + categoryId + " not found");
     }
+
+    @Override
+    public Category updateCategory(Category category, Long categoryId) {
+        // Initialize a variable to hold the found category
+        Category existingCategory = null;
+
+        // Iterate through the list of categories
+        for (Category c : categories) {
+            // Check if the category ID matches the given ID
+            if (c.getCategoryId() == categoryId) {
+                existingCategory = c; // Found the category, assign it to existingCategory
+                break; // Exit the loop as we found the category
+            }
+        }
+        // Check if a category was found
+        if (existingCategory != null) {
+            // Update the category name of the found category
+            existingCategory.setCategoryName(category.getCategoryName());
+            // Return the updated category
+            return existingCategory;
+        } else {
+            // If no category was found, throw a 404 NOT FOUND exception
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Resource not found");
+        }
+    }
 }
 
