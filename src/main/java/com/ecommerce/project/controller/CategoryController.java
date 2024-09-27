@@ -13,8 +13,13 @@ import java.util.List;
  * @RestController annotation indicates that this class is a controller in a Spring application.
  * It marks the class as a web controller, meaning its methods will handle HTTP requests.
  * The return values from its methods will be automatically serialized into JSON responses by default.
+ *
+ * @RequestMapping("/api") annotation is used to define the base URL for all the endpoints in this controller.
+ * This means that any request to this controller will start with "/api".
+ * For example, if a method is mapped to "/categories", the full URL will be "/api/categories".
  */
 @RestController
+@RequestMapping("/api")
 public class CategoryController {
 
     // Instance of CategoryService (the service layer that handles business logic related to categories)
@@ -37,7 +42,7 @@ public class CategoryController {
      *
      * @return ResponseEntity containing the list of categories and an HTTP status of 200 OK.
      */
-    @GetMapping("/api/public/categories")
+    @GetMapping("/public/categories")
     public ResponseEntity<List<Category>> getAllCategories() {
         List<Category> categories = categoryService.getAllCategories();  // Fetches the list of all categories
         return new ResponseEntity<>(categories, HttpStatus.OK);  // Returns the categories and a 200 OK status
@@ -52,7 +57,7 @@ public class CategoryController {
      * @param category The Category object received in the request body that needs to be created.
      * @return ResponseEntity containing a success message and HTTP status 201 CREATED if the operation is successful.
      */
-    @PostMapping("/api/public/categories")
+    @PostMapping("/public/categories")
     public ResponseEntity<String> createCategory(@RequestBody Category category) {
         categoryService.createCategory(category);  // Creates and saves the new category
         return new ResponseEntity<>("Category added successfully!", HttpStatus.CREATED);  // Returns a success message with a 201 CREATED status
@@ -68,7 +73,7 @@ public class CategoryController {
      * @param categoryId The ID of the category to be deleted, received as a path variable.
      * @return ResponseEntity containing a success or error message, with the appropriate HTTP status code.
      */
-    @DeleteMapping("/api/public/categories/{categoryId}")
+    @DeleteMapping("/admin/public/categories/{categoryId}")
     public ResponseEntity<String> deleteCategory(@PathVariable Long categoryId) {
         try {
             String status = categoryService.deleteCategory(categoryId);  // Deletes the category by ID
@@ -90,7 +95,7 @@ public class CategoryController {
      * @param categoryId The ID of the category to be updated, received as a path variable.
      * @return ResponseEntity containing a success or error message, with the appropriate HTTP status code.
      */
-    @PutMapping("/api/public/categories/{categoryId}")
+    @PutMapping("/public/categories/{categoryId}")
     public ResponseEntity<String> updateCategory(@RequestBody Category category, @PathVariable Long categoryId) {
         try {
             // Calls the service to update the category and store the updated category object.
