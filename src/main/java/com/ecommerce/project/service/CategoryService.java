@@ -4,7 +4,7 @@ import com.ecommerce.project.model.Category;
 
 import java.util.List;
 
-/*
+/**
  * This is a service interface that defines the methods related to
  * the business logic of category management in the e-commerce project.
  * The service layer is responsible for processing data and
@@ -12,7 +12,7 @@ import java.util.List;
  */
 public interface CategoryService {
 
-    /*
+    /**
      * Retrieves a list of all categories.
      *
      * @return A List of Category objects representing all available categories.
@@ -21,7 +21,7 @@ public interface CategoryService {
      */
     List<Category> getAllCategories();
 
-    /*
+    /**
      * Creates a new category.
      *
      * @param category The Category object containing data for the new category.
@@ -30,7 +30,7 @@ public interface CategoryService {
      */
     void createCategory(Category category);
 
-    /*
+    /**
      * Deletes a category by its ID.
      *
      * @param categoryId The unique identifier of the category to be deleted.
@@ -43,7 +43,7 @@ public interface CategoryService {
      */
     String deleteCategory(Long categoryId);
 
-    /*
+    /**
      * Updates an existing category by its ID.
      *
      * @param category   The Category object containing the updated data.

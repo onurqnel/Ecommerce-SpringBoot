@@ -1,24 +1,36 @@
 package com.ecommerce.project.model;
 
-/*
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+/**
  * The Category class represents a model for the category entity.
  * It contains two fields: categoryId (a unique identifier for each category)
  * and categoryName (the name of the category).
  * This class provides a constructor to initialize these fields, as well as
  * getter and setter methods to access and modify them.
  */
+@Entity(name = "categories")
 public class Category {
 
     // The unique identifier for the category
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long categoryId;
 
     // The name of the category
     private String categoryName;
 
-    /*
+    // Default no-arg constructor
+    public Category() {
+    }
+
+    /**
      * Constructor for creating a Category object with a specified id and name.
      *
-     * @param categoryId The unique identifier for the category.
+     * @param categoryId   The unique identifier for the category.
      * @param categoryName The name of the category.
      */
     public Category(long categoryId, String categoryName) {
@@ -26,7 +38,7 @@ public class Category {
         this.categoryName = categoryName;
     }
 
-    /*
+    /**
      * Getter method for categoryId.
      *
      * @return The unique identifier of the category.
@@ -35,7 +47,7 @@ public class Category {
         return categoryId;
     }
 
-    /*
+    /**
      * Setter method for categoryId.
      * Allows modifying the unique identifier of the category.
      *
@@ -45,7 +57,7 @@ public class Category {
         this.categoryId = categoryId;
     }
 
-    /*
+    /**
      * Getter method for categoryName.
      *
      * @return The name of the category.
@@ -54,7 +66,7 @@ public class Category {
         return categoryName;
     }
 
-    /*
+    /**
      * Setter method for categoryName.
      * Allows modifying the name of the category.
      *

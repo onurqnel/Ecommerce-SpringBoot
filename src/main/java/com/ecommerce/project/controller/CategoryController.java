@@ -9,11 +9,10 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
-/*
+/**
  * @RestController annotation indicates that this class is a controller in a Spring application.
  * It marks the class as a web controller, meaning its methods will handle HTTP requests.
  * The return values from its methods will be automatically serialized into JSON responses by default.
- *
  * @RequestMapping("/api") annotation is used to define the base URL for all the endpoints in this controller.
  * This means that any request to this controller will start with "/api".
  * For example, if a method is mapped to "/categories", the full URL will be "/api/categories".
@@ -25,7 +24,7 @@ public class CategoryController {
     // Instance of CategoryService (the service layer that handles business logic related to categories)
     private final CategoryService categoryService;
 
-    /*
+    /**
      * Constructor injection to inject CategoryService instance when CategoryController is created.
      * This is a recommended way of dependency injection in Spring, ensuring that the CategoryService
      * is provided by Spring at runtime and used for handling business logic in this controller.
@@ -34,7 +33,7 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
-    /*
+    /**
      * Handles HTTP GET requests to the endpoint "/api/public/categories".
      * This method retrieves all categories from the service layer and returns them to the client.
      * The return type is ResponseEntity, which represents the entire HTTP response.
@@ -48,7 +47,7 @@ public class CategoryController {
         return new ResponseEntity<>(categories, HttpStatus.OK);  // Returns the categories and a 200 OK status
     }
 
-    /*
+    /**
      * Handles HTTP POST requests to the endpoint "/api/public/categories".
      * This method allows the client to send a new Category object in the request body as JSON.
      * The @RequestBody annotation is used to map the incoming JSON to the Category object.
@@ -63,7 +62,7 @@ public class CategoryController {
         return new ResponseEntity<>("Category added successfully!", HttpStatus.CREATED);  // Returns a success message with a 201 CREATED status
     }
 
-    /*
+    /**
      * Handles HTTP DELETE requests to the endpoint "/api/public/categories/{categoryId}".
      * The {categoryId} is a path variable representing the unique ID of the category to be deleted.
      * It tries to delete the category using the service layer and returns a result message.
@@ -83,7 +82,7 @@ public class CategoryController {
         }
     }
 
-    /*
+    /**
      * Handles HTTP PUT requests to the endpoint "/api/public/categories/{categoryId}".
      * The {categoryId} is a path variable representing the unique ID of the category to be updated.
      * The method accepts a JSON request body (mapped to a Category object) that contains the updated category data.

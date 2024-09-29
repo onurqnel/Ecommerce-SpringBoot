@@ -1,107 +1,90 @@
 package com.ecommerce.project.service;
 
 import com.ecommerce.project.model.Category;
+import com.ecommerce.project.repositories.CategoryRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
-// Marks this class as a Spring service, which means it can be injected into other components like controllers.
+/**
+ * Service class responsible for managing category operations.
+ * This class is marked as a Spring service, enabling it to be
+ * injected into other components such as controllers.
+ */
 public class CategoryServiceLogic implements CategoryService {
 
-    // List to store categories, simulates a database.
-    private final List<Category> categories = new ArrayList<>();
+    @Autowired
+    private CategoryRepository categoryRepository;
 
-    // Variable for auto-incrementing IDs for categories.
-    private Long nextId = 1L;
-
-    /*
+    /**
      * Retrieves the list of all categories.
      *
-     * @return The current list of categories stored in memory.
-     *         This simulates fetching all categories from a database.
+     * This method fetches all categories currently stored in the database.
+     * It uses the CategoryRepository to find and return all category entities.
+     *
+     * @return List of all Category objects stored in the database.
      */
     @Override
     public List<Category> getAllCategories() {
-        return categories;  // Returns the current list of categories.
+        return categoryRepository.findAll();  // Returns the current list of categories.
     }
 
-    /*
-     * Creates a new category by assigning a unique ID and adding it to the list.
+    /**
+     * Creates a new category in the system.
      *
-     * @param category The Category object to be created.
-     *                 The method assigns a unique ID and adds the category to the list.
+     * This method accepts a Category object and saves it to the database.
+     * The category ID will be automatically generated if not provided.
+     *
+     * @param category The Category object to be created and saved.
      */
     @Override
     public void createCategory(Category category) {
-        category.setCategoryId(nextId++);  // Assigns a unique ID to the new category and increments the ID counter.
-        categories.add(category);  // Adds the category to the in-memory list.
+        // Save the new category, ID will be generated automatically
+        categoryRepository.save(category);
     }
 
-    /*
-     * Deletes a category by its ID.
+    /**
+     * Deletes a category based on its unique identifier.
+     *
+     * This method attempts to find a Category by its ID and delete it.
+     * If the category is not found, a ResponseStatusException is thrown
+     * with a NOT_FOUND (404) status.
      *
      * @param categoryId The unique identifier of the category to be deleted.
-     *
-     * @return A success message indicating that the category has been deleted.
-     *
-     * @throws ResponseStatusException If the category with the given ID is not found, an exception is thrown
-     *                                 with a 404 (Not Found) status.
+     * @return A message confirming successful deletion of the category.
+     * @throws ResponseStatusException If no category is found with the given ID.
      */
     @Override
     public String deleteCategory(Long categoryId) throws ResponseStatusException {
-        // Loops through the list of categories to find the one with the matching ID.
-        for (int i = 0; i < categories.size(); i++) {
-            Category category = categories.get(i);
-            // If the category ID matches, the category is removed from the list.
-            if (category.getCategoryId() == categoryId) {
-                categories.remove(i);  // Removes the category from the list.
-                return "Category with categoryId: " + categoryId + " deleted successfully";
-            }
-        }
-        // If no category is found, a ResponseStatusException is thrown with a 404 Not Found status.
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category with categoryId: " + categoryId + " not found");
+        Category existingCategory = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Category with categoryId: " + categoryId + " not found"));
+        categoryRepository.delete(existingCategory);
+        return "Category with categoryId: " + categoryId + " deleted successfully";
     }
 
-    /*
-     * Updates an existing category by its ID.
+    /**
+     * Updates an existing category by its unique ID.
      *
-     * @param category   The new category data to update.
-     *                   This will replace the existing category data.
+     * This method finds a category by its ID and updates it with new data.
+     * If the category is not found, a ResponseStatusException is thrown.
      *
-     * @param categoryId The unique identifier of the category to be updated.
-     *
-     * @return The updated Category object.
-     *
-     * @throws ResponseStatusException If the category with the given ID is not found, a 404 (Not Found) status is returned.
+     * @param category   The updated Category object containing new data.
+     * @param categoryId The unique identifier of the category to update.
+     * @return The updated Category object after it has been saved.
+     * @throws ResponseStatusException If no category is found with the given ID.
      */
     @Override
     public Category updateCategory(Category category, Long categoryId) {
-        // Initialize a variable to hold the found category
-        Category existingCategory = null;
-
-        // Iterate through the list of categories
-        for (Category c : categories) {
-            // Check if the category ID matches the given ID
-            if (c.getCategoryId() == categoryId) {
-                existingCategory = c; // Found the category, assign it to existingCategory
-                break; // Exit the loop as we found the category
-            }
-        }
-        // Check if a category was found
-        if (existingCategory != null) {
-            // Update the category name of the found category
-            existingCategory.setCategoryName(category.getCategoryName());
-            // Return the updated category
-            return existingCategory;
-        } else {
-            // If no category was found, throw a 404 NOT FOUND exception
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Resource not found");
-        }
+        Category existingCategory = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Category with categoryId: " + categoryId + " not found"));
+        existingCategory.setCategoryName(category.getCategoryName());
+        return categoryRepository.save(existingCategory);
     }
 }
+
 
 
