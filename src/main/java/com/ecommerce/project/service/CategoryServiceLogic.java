@@ -14,15 +14,14 @@ import java.util.List;
  * Service class responsible for managing category operations.
  * This class is marked as a Spring service, enabling it to be
  * injected into other components such as controllers.
- */
-public class CategoryServiceLogic implements CategoryService {
+ */ public class CategoryServiceLogic implements CategoryService {
 
     @Autowired
     private CategoryRepository categoryRepository;
 
     /**
      * Retrieves the list of all categories.
-     *
+     * <p>
      * This method fetches all categories currently stored in the database.
      * It uses the CategoryRepository to find and return all category entities.
      *
@@ -35,7 +34,7 @@ public class CategoryServiceLogic implements CategoryService {
 
     /**
      * Creates a new category in the system.
-     *
+     * <p>
      * This method accepts a Category object and saves it to the database.
      * The category ID will be automatically generated if not provided.
      *
@@ -49,7 +48,7 @@ public class CategoryServiceLogic implements CategoryService {
 
     /**
      * Deletes a category based on its unique identifier.
-     *
+     * <p>
      * This method attempts to find a Category by its ID and delete it.
      * If the category is not found, a ResponseStatusException is thrown
      * with a NOT_FOUND (404) status.
@@ -60,15 +59,14 @@ public class CategoryServiceLogic implements CategoryService {
      */
     @Override
     public String deleteCategory(Long categoryId) throws ResponseStatusException {
-        Category existingCategory = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Category with categoryId: " + categoryId + " not found"));
+        Category existingCategory = categoryRepository.findById(categoryId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Category with categoryId: " + categoryId + " not found"));
         categoryRepository.delete(existingCategory);
         return "Category with categoryId: " + categoryId + " deleted successfully";
     }
 
     /**
      * Updates an existing category by its unique ID.
-     *
+     * <p>
      * This method finds a category by its ID and updates it with new data.
      * If the category is not found, a ResponseStatusException is thrown.
      *
@@ -79,8 +77,7 @@ public class CategoryServiceLogic implements CategoryService {
      */
     @Override
     public Category updateCategory(Category category, Long categoryId) {
-        Category existingCategory = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Category with categoryId: " + categoryId + " not found"));
+        Category existingCategory = categoryRepository.findById(categoryId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Category with categoryId: " + categoryId + " not found"));
         existingCategory.setCategoryName(category.getCategoryName());
         return categoryRepository.save(existingCategory);
     }
